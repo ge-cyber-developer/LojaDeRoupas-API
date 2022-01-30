@@ -17,17 +17,19 @@ class PecaView(APIView):
         
         return Response(peca)
 
+
     def post(self, request):
         nome = request.data["nome"]
         tamanho = request.data["tamanho"]
         peca = models.Peca(nome = nome, tamanho = tamanho)
         peca.save()
-        return Response ("Salvamos uma peça")
+        return Response("Salvamos uma peça")
+
 
     def delete(self, request, id):
         peca = models.Peca.objects.get(id = id)
         peca.delete()
-        return Response ("Deletamos uma peca")
+        return Response("Deletamos uma peca")
         
 
 
