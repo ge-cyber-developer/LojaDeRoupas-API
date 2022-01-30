@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <div>
+            <input id="nomeDaPeca" placeholder="Nome da Peca">
+            <input id="tamanhoDaPeca" placeholder="Tamanho da Peca">
+            <button onclick="criarPeca()">Criar</button>
+        </div>
+        <script>
+            function pegarPecasDaApi(){
+                let url = "/pecas"
+
+                fetch(url).then(function(response) { // Faz um get 
+                    return response.json(); // Pega o json
+                }).then(function(pecas) {
+                    // Se funcionar 
+                    pecas.forEach(function(peca){
+                        var pecaDiv = document.createElement('div'); // Cria uma div
+                        pecaDiv.innerHTML = `
+                            <div>
+                                ${peca.id} - ${peca.nome} - ${peca.tamanho}
+                                <button onclick="deletarPeca(${peca.id})"> Deletar </button>
+                            </div>
+                        ` // Coloca o nome da peca na div
+                        document.body.appendChild(pecaDiv); // Coloca essa div como "filho" da tag <body>
+                    });
+                }).catch(function() {
+                    //Se não funcionar
+                    console.log("Deu ruim");
+                });
+            }
+
+
+            function criarPeca(){
+                let nomeDaPeca = document.getElementById("nomeDaPeca").value
+                let tamanhoDaPeca = document.getElementById("tamanhoDaPeca").value
+                let dataToSend = {
+                    nome: nomeDaPeca,
+                    tamanho: tamanhoDaPeca
+                }
+                let url = "/pecas/"
+                fetch(url, {
+                    method: "POST", // O Metodo é POST
+                    headers: {
+                        'Content-Type': 'application/json' // Avisar que vou enviar um JSON
+                    }, 
+                    body: JSON.stringify(dataToSend) // Enviar os dados da peca
+                }).then(res => {
+                    console.log("Request complete! response:", res);
+                });
+            }
+
+
+            function deletarPeca(id) {
+                console.log("DELETAR A PECA COM ID", id)
+                let url = `/pecas/${id}`
+                fetch(url, {
+                    method: "DELETE", // O Metodo é POST
+                }).then(res => {
+                    console.log("Request complete! response:", res);
+                });
+            }
+
+            pegarPecasDaApi()
+        </script>
+    </body>
+</html>

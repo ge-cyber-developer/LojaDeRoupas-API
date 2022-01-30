@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.renderers import TemplateHTMLRenderer
 from . import models
 
 
-class PecaView(APIView):
+class PecaView(APIView): # Quando se quer mandar json
     def get(self, request,id= None):
         if id:
             peca = models.Peca.objects.get(id=id)
@@ -32,5 +34,7 @@ class PecaView(APIView):
         return Response("Deletamos uma peca")
         
 
-
-
+class FirstPage(generics.RetrieveAPIView): # Quando se quer mandar html
+    renderer_classes = [TemplateHTMLRenderer]
+    def get(self, request):
+        return Response(template_name='index.html')

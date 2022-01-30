@@ -21,5 +21,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("pecas/", views.PecaView.as_view()),
-    path("pecas/<int:id>", views.PecaView.as_view())
+    path("pecas/<int:id>", views.PecaView.as_view()),
+
+    path("", views.FirstPage.as_view())
 ]
